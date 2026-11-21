@@ -512,7 +512,7 @@ async function analyseSmsMessages() {
     ].join("-");
 
     const response = await fetch(
-      "http://127.0.0.1:8000/process-transactions",
+      `${(import.meta.env.VITE_API_URL || "http://127.0.0.1:8000").replace(/\/$/, "")}/process-transactions`,
       {
         method: "POST",
         headers: {
@@ -865,7 +865,7 @@ return (
                         <div className="flex h-full w-full items-end justify-center">
                           <div
                             title={`${money(day.amount)} spent`}
-                            className="w-full max-w-10 rounded-t-lg bg-[#A7D9CE] transition-all hover:bg-[#0F766E]"
+                            className="w-full max-w-10 rounded-t-lg bg-gradient-to-t from-[#0F766E] to-[#2DD4BF] shadow-sm transition-all duration-300 hover:brightness-110"
                             style={{
                               height: `${(day.amount / maxWeekly) * 100}%`,
                             }}
@@ -877,7 +877,7 @@ return (
                   </div>
 
                   <div className="mt-5 flex items-center gap-2 border-t border-slate-100 pt-4">
-                    <span className="h-2.5 w-2.5 rounded-full bg-[#A7D9CE]" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-[#0F766E]" />
                     <span className="text-xs text-slate-500">
   Daily payments · {hasProcessedData ? "Imported SMS" : "Demo data"}
 </span>
@@ -999,9 +999,10 @@ return (
 
 <p className="mt-3 text-sm leading-6 text-teal-50">
   {hasProcessedData && processedInsights?.insights
-    ? Array.isArray(processedInsights.insights)
+  ? (Array.isArray(processedInsights.insights)
       ? processedInsights.insights.join(" ")
       : processedInsights.insights
+    ).replace(/\*/g, "")
     : hasProcessedData
       ? "No AI insight is available for these transactions yet."
       : `In this sample, ${topCategory.name.toLowerCase()} accounts for ${topCategory.share}% of your net spending (${money(topCategory.amount)}). Reviewing a few purchases here could help you manage your monthly budget.`}
@@ -1462,9 +1463,10 @@ return (
 
           <p className="mt-4 text-sm leading-7 text-teal-50">
             {processedInsights?.insights
-              ? Array.isArray(processedInsights.insights)
-                ? processedInsights.insights.join(" ")
-                : processedInsights.insights
+  ? (Array.isArray(processedInsights.insights)
+      ? processedInsights.insights.join(" ")
+      : processedInsights.insights
+    ).replace(/\*/g, "")
               : "No AI insight is available for these transactions yet."}
           </p>
 
@@ -1783,6 +1785,8 @@ function MessagePreviewEmpty() {
   );
 }
 
+
+
 function SummaryCard({
   title,
   amount,
@@ -1792,26 +1796,40 @@ function SummaryCard({
   iconBackground,
 }) {
   return (
-    <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+    <div className="group relative overflow-hidden rounded-2xl border border-slate-200/80 bg-white p-5 shadow-[0_2px_12px_rgba(15,23,42,0.04)] transition-all duration-300 hover:-translate-y-1 hover:border-teal-200 hover:shadow-[0_12px_28px_rgba(15,118,110,0.10)] sm:p-6">
       <div className="flex items-center justify-between">
-        <span className="text-sm font-medium text-slate-500">{title}</span>
-        <div className={`rounded-xl p-2.5 ${iconBackground} ${iconColor}`}>
-          <Icon size={20} />
+        <span className="text-sm font-semibold tracking-wide text-slate-500">
+          {title}
+        </span>
+
+        <div
+          className={`rounded-xl p-3 transition-transform duration-300 group-hover:scale-110 ${iconBackground} ${iconColor}`}
+        >
+          <Icon size={21} />
         </div>
       </div>
-      <h3 className="mt-5 text-2xl font-bold tracking-tight">{amount}</h3>
-      <p className="mt-2 text-xs text-slate-400">{note}</p>
+
+      <h3 className="mt-5 text-2xl font-extrabold tracking-tight text-[#142B3A] sm:text-3xl">
+        {amount}
+      </h3>
+
+      <p className="mt-2 text-xs font-medium leading-relaxed text-slate-400">
+        {note}
+      </p>
+
+      <div className="absolute bottom-0 left-0 h-1 w-0 bg-gradient-to-r from-[#0F766E] to-[#2DD4BF] transition-all duration-300 group-hover:w-full" />
     </div>
   );
 }
 
+
 // Used on both the Overview and Transactions pages
 function TransactionTable({ rows, onSelectTransaction }) {
   return (
-    <div className="mt-5 overflow-x-auto">
+   <div className="mt-5 overflow-x-auto rounded-xl">
       <table className="w-full min-w-[600px] text-left">
         <thead>
-          <tr className="border-b border-slate-100 text-xs text-slate-400">
+          <tr className="border-b border-slate-200 bg-slate-50/70 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
             <th className="pb-3 font-medium">Merchant</th>
             <th className="pb-3 font-medium">Category</th>
             <th className="pb-3 font-medium">Date</th>
@@ -1841,11 +1859,11 @@ const Icon = isCredit
               <tr
                   key={transaction.id}
                    onClick={() => onSelectTransaction(transaction)}
-                     className="border-b border-slate-50 last:border-0 cursor-pointer hover:bg-slate-50 transition"
+                     className="group cursor-pointer border-b border-slate-100 last:border-0 transition-all duration-200 hover:bg-teal-50/50"
                  >
                 <td className="py-4">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-slate-50 text-slate-500">
+                    <div  className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#E8F4F1] text-[#0F766E] transition-colors group-hover:bg-[#D1FAE5]">
                       <Icon size={17} />
                     </div>
                     <span className="text-sm font-semibold">
@@ -1862,7 +1880,7 @@ const Icon = isCredit
                
 <td className="py-4">
   <span
-    className={`rounded-full px-2.5 py-1 text-xs font-medium ${
+    className={`rounded-full px-3 py-1.5 text-xs font-semibold ring-1 ring-inset ${
       displayStatus === "failed" ||
       displayStatus === "not_a_transaction"
         ? "bg-red-50 text-red-700"
