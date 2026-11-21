@@ -292,12 +292,45 @@ The application is a hackathon prototype and should not be treated as a substitu
 
 ## Future Enhancements
 
-- Secure backend authentication using Supabase JWT verification.
-- Persistent per-user transaction storage with database access controls.
-- More robust transaction and refund matching.
-- Additional regional language support.
-- Personalised budgeting recommendations.
-- Expanded financial analytics and reporting.
+We plan to evolve PaisaLens into a more personalised and intelligent financial management platform.
+
+### 1. Personalised Budgeting
+
+- Allow users to create custom monthly budgets.
+- Provide category-wise budget allocation.
+- Adapt budget suggestions based on spending patterns.
+
+### 2. Advanced Financial Insights
+
+- Compare spending across multiple months.
+- Identify recurring expenses and spending trends.
+- Generate personalised AI-powered saving recommendations.
+
+### 3. Smart Notifications
+
+- Alert users when they approach their monthly budget.
+- Identify unusual spending patterns.
+- Provide reminders for recurring expenses.
+
+### 4. Improved Transaction Intelligence
+
+- Improve refund matching for complex and partial refunds.
+- Support more Indian bank and UPI SMS formats.
+- Expand regional language and Hinglish support.
+
+### 5. Security and Data Management
+
+- Implement secure backend authentication using Supabase JWT verification.
+- Introduce persistent per-user transaction storage.
+- Apply database access controls to protect financial information.
+
+### 6. Advanced Financial Reporting
+
+- Generate downloadable monthly financial reports.
+- Provide detailed spending analytics.
+- Track savings progress over time.
+
+Our long-term vision is to make PaisaLens a personal financial companion that helps users understand, manage, and improve their financial decisions.
 
 ---
 
